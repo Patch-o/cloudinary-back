@@ -38,11 +38,24 @@ const putPlayer = async (req, res, next) =>{
 
         const playerDb = await Player.findByIdAndUpdate(id, player);
         if(playerDb.photo){
-            deleteFile(playerDb.photo)
+           return deleteFile(playerDb.photo)
         }
         return res.status(200).json(playerDb);
     } catch (error) {
         return next(error);
+    }
+}
+
+const deletePlayer = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const player = await Player.findByIdAndDelete(id);
+    if(player.photo){
+      deleteFile(player.photo);
+    }
+    return res.status(200).json(player);
+  } catch (error) {
+    return next(error);
     }
 }
 
@@ -51,5 +64,6 @@ const putPlayer = async (req, res, next) =>{
 module.exports = {
   getAllPlayers,
   postPlayer,
-  putPlayer
+  putPlayer,
+  deletePlayer
 };

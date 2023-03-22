@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require('dotenv');
 //routes imports
 const playerRoutes = require('./src/api/players/player.routes');
+const teamRoutes = require('./src/api/teams/teams.routes');
 
 dotenv.config();
 const app = express();
@@ -39,6 +40,7 @@ app.use(
 
 //ROUTES
 app.use('/player', playerRoutes);
+app.use('/team', teamRoutes);
 
 app.use("*", (req, res, next) => {
   return res.status(404).json('Route not found');
@@ -46,7 +48,7 @@ app.use("*", (req, res, next) => {
 
 app.use((error,req, res) => {
   return res.status(error.status || 500).json(error.message || "Unexpected error");
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at: http://localhost:${PORT}`);
